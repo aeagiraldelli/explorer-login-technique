@@ -10,7 +10,6 @@ export function Header() {
   return (
     <Container>
       <h1>Menu</h1>
-
       <aside>
         <User>
           <span>

@@ -5,6 +5,10 @@ const authConfig = require('../configs/auth');
 const AppError = require('../utils/AppError');
 
 class SessionsController {
+  /**
+   * @param {import('express').Request} request
+   * @param {import('express').Response} response
+   */
   async create(request, response) {
     const { email, password } = request.body;
 
@@ -27,7 +31,15 @@ class SessionsController {
       expiresIn,
     });
 
-    response.status(201).json({ token, user });
+    delete user.password;
+
+    response.cookie('token', token, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      maxAge: 15 * 60 * 1000,
+    });
+    response.status(201).json({ user });
   }
 }
 
